@@ -13,6 +13,12 @@ import BoardAdmin from "./components/board-admin.component";
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 import { history } from './helpers/history';
+
+
+
+
+
+
 class App extends Component {
   constructor(props) {
     super(props);

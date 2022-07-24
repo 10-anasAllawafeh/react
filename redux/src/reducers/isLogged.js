@@ -11,14 +11,4 @@ const loggedReducer=(state=false,action)=>{
             return state;
     }
 }
-
-const nameReducer=(state="",action)=>{
-    switch (action) {
-        case "name":
-            return state= action.name;
-    
-        default:
-            return state;
-    }
-}
-export default loggedReducer;nameReducer;
+export default loggedReducer;
