@@ -4,12 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
 import Profile from "./components/profile.component";
-import BoardUser from "./components/board-user.component";
-import BoardModerator from "./components/board-moderator.component";
-import BoardAdmin from "./components/board-admin.component";
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 import { history } from './helpers/history';
@@ -24,8 +19,6 @@ class App extends Component {
     super(props);
     this.logOut = this.logOut.bind(this);
     this.state = {
-      showModeratorBoard: false,
-      showAdminBoard: false,
       currentUser: undefined,
     };
     history.listen((location) => {
@@ -37,8 +30,6 @@ class App extends Component {
     if (user) {
       this.setState({
         currentUser: user,
-        // showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-        // showAdminBoard: user.roles.includes("ROLE_ADMIN"),
       });
     }
   }
@@ -46,12 +37,13 @@ class App extends Component {
     this.props.dispatch(logout());
   }
   render() {
-    const { currentUser, showModeratorBoard, showAdminBoard } = this.state;
+    const { currentUser } = this.state;
     return (
+      <>
       <Router history={history}>
-        <div>
+        <header>
           <nav className="navbar navbar-expand navbar-dark bg-dark">
-            <p className="navbar-brand">
+            <p className="navbar-brand mt-3">
               Admin Dashboard
             </p>
             <div className="navbar-nav mr-auto">
@@ -71,39 +63,32 @@ class App extends Component {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="/login" className="nav-link" onClick={this.logOut}>
+                  <a href="/" className="nav-link" onClick={this.logOut}>
                     LogOut
                   </a>
                 </li>
               </div>
-            ) : (
-              <div className="navbar-nav ml-auto">
-                <li className="nav-item">
-                  <Link to={"/login"} className="nav-link">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={"/register"} className="nav-link">
-                    Sign Up
-                  </Link>
-                </li>
-              </div>
-            )}
+            ) : (<div className="navbar-nav ml-auto"></div>)}
           </nav>
+          </header>
+          <main>
           <div className="container mt-3">
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/user" element={<BoardUser />} />
-              <Route path="/mod" element={<BoardModerator />} />
-              <Route path="/admin" element={<BoardAdmin />} />
             </Routes>
           </div>
-        </div>
+          </main>
+        <footer className="bg-light text-center text-lg-start mt-5">
+          {/* <!-- Copyright --> */}
+          <div className="text-center p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
+            © 2020 Copyright:
+            <a className="text-light" target={"_blank"} href="https://www.linkedin.com/in/anas-al-lawafeh-b05954232">Anas Allwafia</a>
+          </div>
+          {/* <!-- Copyright --> */}
+      </footer>
       </Router>
+      </>
     );
   }
 }

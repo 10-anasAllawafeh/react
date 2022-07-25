@@ -46,8 +46,6 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       dispatch(login(this.state.username, this.state.password))
         .then(() => {
-        //   history.push("/profile");
-        //   window.location.reload();
         window.location="/profile";
         })
         .catch(() => {
@@ -70,7 +68,7 @@ class Login extends Component {
       <div className="col-md-12">
         <div className="card card-container">
           <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            src="https://cdn1.iconfinder.com/data/icons/seo-internet-set-1-1/64/SEO__internet_1-05-512.png"
             alt="profile-img"
             className="profile-img-card"
           />

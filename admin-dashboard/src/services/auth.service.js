@@ -1,5 +1,4 @@
 import axios from "axios";
-const API_URL = "http://localhost/react/redux_auth/php/connect.php?email=`+email+'&pass='+pass";
 class AuthService {
   login(username, password) {
     return axios
@@ -14,10 +13,6 @@ class AuthService {
   }
   logout() {
     localStorage.removeItem("user");
-  }
-  register(username, email, phone, password) {
-      console.log("done");
-      return axios.post('http://localhost/project7/seaneighbor/php/insertuser.php?name='+username+'&email='+email+'&phone='+phone+'&pass='+password);
   }
 }
 export default new AuthService();

@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Navigate } from 'react-router-dom';
 import { connect } from "react-redux";
 import axios from "axios";
+import { deleteData } from "../actions/data";
 
 class Profile extends Component {
-
+  
   state={data:[], deleted:[],filtered:[]};
   componentDidMount(){
     axios.get('https://api.edamam.com/api/food-database/v2/parser?app_id=37c5d334&app_key=8cd3b4bd9124c2a592c3dfcb94564740&ingr=apple&nutrition-type=cooking&health=alcohol-free&category=fast-foods')
@@ -35,12 +36,14 @@ class Profile extends Component {
   };
 
   deleteItem(i){
+    const { dispatch } = this.props;
     this.setState({deleted:[...this.state.deleted,i]})
+    dispatch(deleteData(i));
     console.log(this.state.deleted);
   };
-
     render() {
     const { user: currentUser } = this.props;
+    const { dataFrom: deletedItems } = this.props;
     const { data ,deleted , filtered} = this.state;
     console.log(data);
     console.log(deleted);
@@ -49,52 +52,34 @@ class Profile extends Component {
       return <Navigate to="/login" />;
     }
     return (
-      <div className="container">
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.name}</strong> Profile
-          </h3>
-        </header>
-        {/* <p>
-          <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p> */}
-        <p>
-          <strong>Id:</strong> {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong> {currentUser.email}
-        </p>
-        <strong>Phone:</strong>
-        <p>{currentUser.phone}</p>
-        <ul>
+      <div className="container row">
         {this.state.data.map((food,i) => {
           if (this.state.deleted.includes(i)) {
-            return <li key={i}>Deleted {i}</li>
+            return ;
           }
           else{
               return(
-                <li key={i}>
-                  <p>Dish: {food['food']['label']}</p>
-                  <p>category: {food['food']['category']}</p>
-                  <p>Content: {food['food']['foodContentsLabel']}</p>
-                  {/* <form onSubmit={this.deleteItem(i)}> */}
-                    {/* <input type={"hidden"} value={i}></input> */}
-                    <button type="submit" className="btn btn-danger" onClick={()=>this.deleteItem(i)}>Delete</button>
-                  {/* </form> */}
-                </li>
+                <div className="card col-4" key={i}>
+                <div className="card-body">
+                  <h5 className="card-title">Dish: {food['food']['label']}</h5>
+                  <h6 className="card-subtitle mb-2 text-muted">category: {food['food']['category']}</h6>
+                  <p className="card-text" style={{height:"240px"}}>Content: {food['food']['foodContentsLabel']}</p>
+                  <button type="submit" className="btn btn-danger" onClick={()=>this.deleteItem(i)}>Delete</button>
+                </div>
+            </div>
               )
               }
         })}
-        </ul>
       </div>
     );
   }
 }
 function mapStateToProps(state) {
   const { user } = state.auth;
+  const { dataFrom } = state.data;
   return {
     user,
+    dataFrom,
   };
 }
 export default connect(mapStateToProps)(Profile);
