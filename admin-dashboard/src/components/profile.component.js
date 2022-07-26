@@ -33,9 +33,9 @@ class Profile extends Component {
           }
       }
     )
-    if (localStorage.getItem('session')) {
-      this.setState({deleted:JSON.parse(localStorage.getItem('session'))})
-    }
+    // if (localStorage.getItem('session')) {
+    //   this.setState({deleted:JSON.parse(localStorage.getItem('session'))})
+    // }
   };
   componentDidUpdate(){
     localStorage.setItem('session', JSON.stringify(this.state.deleted));
@@ -49,7 +49,6 @@ class Profile extends Component {
   };
     render() {
     const { user: currentUser } = this.props;
-    const { dataFrom: deletedItems } = this.props;
     const { data ,deleted , filtered} = this.state;
     const session =JSON.parse(localStorage.getItem('session'));
     console.log('session',session);
@@ -57,29 +56,29 @@ class Profile extends Component {
     console.log(deleted);
     console.log("filtered",filtered);
     if (!currentUser) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
     return (
       <div className="container row">
         {this.state.data.map((food,i) => {
-          if (session){
-            if (session.includes(i) ||this.state.deleted.includes(i)) {
-              return ;
-            }
-            else{
-              return(
-                <div className="card col-4" key={i}>
-                <div className="card-body">
-                  <h5 className="card-title">Dish: {food['food']['label']}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">category: {food['food']['category']}</h6>
-                  <p className="card-text" style={{height:"240px"}}>Content: {food['food']['foodContentsLabel']}</p>
-                  <button type="submit" className="btn btn-danger" onClick={()=>this.deleteItem(i)}>Delete</button>
-                </div>
-            </div>
-              )
-              }
-          }
-          else{
+          // if (session){
+          //   if (session.includes(i) ||this.state.deleted.includes(i)) {
+          //     return ;
+          //   }
+          //   else{
+          //     return(
+          //       <div className="card col-4" key={i}>
+          //       <div className="card-body">
+          //         <h5 className="card-title">Dish: {food['food']['label']}</h5>
+          //         <h6 className="card-subtitle mb-2 text-muted">category: {food['food']['category']}</h6>
+          //         <p className="card-text" style={{height:"240px"}}>Content: {food['food']['foodContentsLabel']}</p>
+          //         <button type="submit" className="btn btn-danger" onClick={()=>this.deleteItem(i)}>Delete</button>
+          //       </div>
+          //   </div>
+          //     )
+          //     }
+          // }
+          // else{
           if (this.state.deleted.includes(i)) {
             return ;
           }
@@ -95,7 +94,8 @@ class Profile extends Component {
             </div>
               )
               }
-    }})}
+    // }
+    })}
       </div>
     );
   }
